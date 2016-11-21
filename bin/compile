@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import sys,os
-import time
+import sys,os, shutil
 
 build_dir= sys.argv[1]
 cache_dir= sys.argv[2]
@@ -8,124 +7,54 @@ print("get arguments from cf ......")
 
 def get_root():
 	try:
-		script = os.path.split(os.path.realpath(__file__))[0]
-		tmp = script.split("/")
-		root_path = ""
-		for x in range(1,len(tmp)):
-			if x != len(tmp)-1:
-				root_path += "/" + tmp[x]
-		print ("get root_path.........")
+		script = os.path.split(os.path.realpath(__file__))[0];
+		root_path = os.path.split(script)[0];
 		return root_path
 	except Exception as e:
 		print e
 
-#install JDK 1.7
-def install_jdk(root_path):
-	if not os.path.exists(build_dir + "/.tongweb_buildpack/jdk1.7.0_55/bin"):
-		jdk_location = root_path + "/resource/cache/jdk-7u55-linux-x64.gz"
-		os.system("mkdir "+ build_dir + "/.tongweb_buildpack")
-		os.system("tar -zxf "+jdk_location+" -C "+ build_dir+"/.tongweb_buildpack/")
-		os.system("echo \"export JAVA_HOME="+build_dir+"/.tongweb_buildpack/jdk1.7.0_55\" >> ~/.bash_profile" )
-		os.system("echo \"export PATH=\$PATH:JAVA_HOME/bin\" >> ~/.bash_profile")
-#		os.system("source ~/.bash_profile")
-		os.putenv("JAVA_HOME",build_dir+"/.tongweb_buildpack/jdk1.7.0_55")
-		flag = 1
-		while flag:
-			flag=0;
-			for line in os.popen("ps xa"):
-				fields = line.split()
-				process = fields[4]
-				if process == "tar":
-					flag=1
-					break
-					time.sleep(100)
 
-		print "jdk is installed complete!"
-	else:
-		print "jdk is already installed~"
-	return 
-
-#get config file
-def get_config_file(root_path):
-#	PORT=os.getenv("PORT")
-#	file_config = open(root_path+"/config/install.properties","r")
-#	len_file = len(file_config.readlines())
-	if not os.path.exists(build_dir+"/.install.properties"):
-		file_config = open(build_dir+"/.install.properties","w")
-		file_config.write("INSTALL_UI=silent\n")
-		file_config.write("USER_INSTALL_DIR=/home/vcap/tongweb5\n")
-		file_config.write("JDK_HOME=$PWD/.tongweb_buildpack/jdk1.7.0_55\n")
-		file_config.write("USER_INPUT_MODE_RESULTS=USER_INPUT_MODE_RESULTS\n")
-		file_config.write("LICENSE_FILE=/root/tongweb/license.dat\n")
-		file_config.write("USER_INPUT_PORTS_RESULTS=\"9061\",\"8080\",\"5101\",\"7201\",\"7879\"\n")
-		file_config.close()
-		os.chmod(build_dir+"/.install.properties",0777)
-	else:
-		print "config file getted~"
-	return
+def prepare_app_files():
+	app_path = os.path.join(build_dir, 'jexus_b_sites');
+	if not os.path.exists(app_path):
+		os.mkdir(app_path)
+	for x in os.listdir(build_dir):
+		srcPath = os.path.join(build_dir, x);
+		if x != 'start-app.sh' and x != 'jexus_build_pack':
+			print "copy %s" % srcPath;
+			if os.path.isdir(app_path):
+				shutil.move(srcPath, app_path);
 
 
-#install tongweb5
-def install_tongweb(root_path):
-	os.system("echo $JAVA_HOME")
-	if not os.path.exists(build_dir+"/tongweb5/bin"):
-		tongweb_location = cache_dir + "/Install_TW5.0.3.0_Enterprise_Linux.bin"
-		os.system("export JAVA_HOME="+build_dir+"/.tongweb_buildpack/jdk1.7.0_55;export PATH=$PATH:$JAVA_HOME/bin;"+root_path + "/resource/cache/Install_TW5.0.3.0_Enterprise_Linux.bin" + " -i silent -f " + build_dir + "/.install.properties")
-		flag = 1
-		while flag:
-			flag=0;
-			for line in os.popen("ps xa"):
-				fields = line.split()
-				process = fields[4]
-				if process == root_path + "/resource/cache/Install_TW5.0.3.0_Enterprise_Linux.bin":
-					flag=1
-					time.sleep(100)
-					break
+def install_jexus(root_path):
+	jexus_path = os.path.join(build_dir, 'jexus_build_pack');
+	jexus_resource_path = os.path.join(root_path, 'resources/jexus-5.8.1-x64.tar.gz');
+	if not os.path.exists(jexus_path):
+		os.mkdir(jexus_path, 0777)
+	os.system("tar -zxf "+jexus_resource_path+" -C "+ jexus_path)
 
-		os.system("mv /home/vcap/tongweb5 "+ build_dir+"/.tongweb_buildpack/")
-		os.system("cp "+root_path+"/config/license.dat " + build_dir + "/.tongweb_buildpack/tongweb5/")
-		os.system("mkdir " + build_dir + "/.tongweb_buildpack/tongweb5/autodeploy/webapp.war")
-		os.system("cp "+root_path+"/config/.ch_port.py " + build_dir)
-		print "tongweb5 is installed complete!"
-	else :
-		print ("tongweb already installed~")
-	return 
-
-
-def deploy():
-	for parent, dirnames, filenames in os.walk(build_dir):
-		if parent == build_dir:
-			for dirname in dirnames:
-				if not dirname == ".tongweb_buildpack":
-					os.system("mv "+os.path.join(parent,dirname)+" "+build_dir+"/.tongweb_buildpack/tongweb5/autodeploy/webapp.war/")
-			for filename in filenames:
-				if not filename == ".start.sh" and filename != ".ch_port.py":
-					os.system("mv "+os.path.join(parent,filename)+" "+build_dir+"/.tongweb_buildpack/tongweb5/autodeploy/webapp.war/")
-	return 
 
 # make start.sh
-def make_start(root_path):
-	if not os.path.exists(build_dir+"/.start.sh"):
-		os.system("touch " + build_dir +"/.start.sh")
-		file_start = open(build_dir+"/.start.sh","a+")
+def make_start():
+	if not os.path.exists(build_dir+"/start-app.sh"):
+		os.system("touch " + build_dir +"/start-app.sh")
+		file_start = open(build_dir+"/start-app.sh","a+")
 		file_start.write("#!/usr/bin/env bash\n")
-		file_start.write("wait && ./.ch_port.py\n")
-		file_start.write("export JAVA_HOME=$PWD/.tongweb_buildpack/jdk1.7.0_55\n")
-		file_start.write("cd $PWD/.tongweb_buildpack/tongweb5/bin\n")
-		file_start.write("./startserver.sh")
+		file_start.write("wait && ch_port.py\n")
+		# file_start.write("export JAVA_HOME=$PWD/.tongweb_buildpack/jdk1.7.0_55\n")
+		file_start.write("cd $PWD/jexus_build_pack \n")
+		file_start.write("./jws start")
 		file_start.close()
-		os.chmod(build_dir +"/.start.sh",0777)
+		os.chmod(build_dir +"/start-app.sh",0777)
 	else:
-		print "already make the start.sh~"
+		print "already make the start-app.sh~"
 	return
 
 def main():
 	root_path = get_root()
-	install_jdk(root_path)
-	get_config_file(root_path)
-	install_tongweb(root_path)
-	deploy()
-	make_start(root_path)
+	prepare_app_files();
+	install_jexus(root_path);
+	make_start()
 	print "compile is compelet!~~"
 	return 
 

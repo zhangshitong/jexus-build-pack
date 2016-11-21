@@ -40,6 +40,7 @@ def install_jexus(root_path):
 	destPath = os.path.join(build_dir, 'config_as_run.py');
 	if not os.path.exists(destPath):
 		shutil.copy2(configRunFilePath, build_dir);
+		os.chmod(os.path.join(build_dir, "config_as_run.py"), 0777);
 	else:
 		print 'config_as_run.py has exists on %s' % build_dir;
 
@@ -50,7 +51,7 @@ def make_start():
 		os.system("touch " + build_dir +"/start-app.sh")
 		file_start = open(build_dir+"/start-app.sh","a+")
 		file_start.write("#!/usr/bin/env bash\n")
-		file_start.write("wait && config_as_run.py\n")
+		file_start.write("wait && ./config_as_run.py\n")
 		# file_start.write("export JAVA_HOME=$PWD/.tongweb_buildpack/jdk1.7.0_55\n")
 		file_start.write("cd $PWD/jexus_build_pack/jexus \n")
 		file_start.write("./jws start")

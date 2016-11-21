@@ -1,36 +1,42 @@
 #!/usr/bin/env python
 import sys,os, shutil
-import re
-portPattern = re.compile("port=")
-rootPattern = re.compile("root=")
 
 def get_root():
-	root = os.getcwd()
+	if(len(sys.argv) > 1):
+		root = sys.argv[1]
+	else:
+		root = os.getcwd()
+	print "get root %s" % root;
 	return root
 
 def get_port():
 	port = os.getenv("PORT")
+	if port == None:
+		port = '8082';
 	return port
 
 def get_jexus_conf(root_path):
-	os.path.join(root_path, 'jexus_build_pack/jexus/siteconf/default');
+	return os.path.join(root_path, "jexus_build_pack/jexus/siteconf/default");
+
 
 
 def get_app_web_path(root_path):
-	os.path.join(root_path, 'jexus_b_sites');
+	return os.path.join(root_path, 'jexus_b_sites');
 
 
 def change_conf_file(root_path, port, app_path):
 	jexus_conf_file = get_jexus_conf(root_path);
-	conf_file = os.open(jexus_conf_file);
+	print 'open file %s' % jexus_conf_file
+	conf_file = open(jexus_conf_file,"r");
 	jexus_conf_over = os.path.join(root_path, 'default');
-	conf_file_over = os.open(jexus_conf_over, "w");
+	conf_file_over = open(jexus_conf_over, "w");
 	content = conf_file.readlines()
 	for line in content:
-		if portPattern.search(line):
+		# print  'read line: %s' % line;
+		if line.startswith('port='):
 			line = 'port='+ port;
 			print "replace port compete~~~~"
-		elif rootPattern.search(line):
+		elif line.startswith('root='):
 			line = 'root=' + app_path;
 		conf_file_over.write(line+"\n")
 	conf_file.close()

@@ -28,9 +28,10 @@ def prepare_app_files():
 
 def install_jexus(root_path):
 	jexus_path = os.path.join(build_dir, 'jexus_build_pack');
-	jexus_resource_path = os.path.join(root_path, 'resources/jexus-5.8.1-x64.tar.gz');
+	jexus_resource_path = os.path.join(root_path, 'resources/jexus/jexus-5.8.1-x64.tar.gz');
 	if not os.path.exists(jexus_path):
 		os.mkdir(jexus_path, 0777)
+	print "tar -zxf "+jexus_resource_path+" -C "+ jexus_path
 	os.system("tar -zxf "+jexus_resource_path+" -C "+ jexus_path)
 
 

@@ -13,6 +13,7 @@ def get_port():
 	port = os.getenv("PORT")
 	if port == None:
 		port = '8082';
+	print 'get_port: %s' % port;
 	return port
 
 def get_jexus_conf(root_path):

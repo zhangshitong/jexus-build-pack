@@ -35,11 +35,11 @@ def change_conf_file(root_path, port, app_path):
 	for line in content:
 		# print  'read line: %s' % line;
 		if line.startswith('port='):
-			line = 'port='+ port;
+			line = 'port='+ port + '\n';
 			print "replace port compete~~~~"
 		elif line.startswith('root='):
-			line = 'root=' + app_path;
-		conf_file_over.write(line+"\n")
+			line = 'root=' + app_path +'\n';
+		conf_file_over.write(line)
 	conf_file.close()
 	conf_file_over.close()
 	shutil.move(jexus_conf_over, jexus_conf_file)

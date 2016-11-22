@@ -68,7 +68,7 @@ def main():
 	install_jexus(root_path);
 	make_start()
 	print "compile is compelet!~~"
-	return 
+	return
 
 
 

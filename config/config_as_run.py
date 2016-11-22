@@ -36,9 +36,10 @@ def change_conf_file(root_path, port, app_path):
 		# print  'read line: %s' % line;
 		if line.startswith('port='):
 			line = 'port='+ port + '\n';
-			print "replace port compete~~~~"
+			print "replace port compete: %s " % line;
 		elif line.startswith('root='):
 			line = 'root=' + app_path +'\n';
+			print "replace web root compete: %s" % line;
 		conf_file_over.write(line)
 	conf_file.close()
 	conf_file_over.close()

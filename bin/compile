@@ -40,13 +40,13 @@ def install_jexus(root_path):
 	print 'tar -zxf complete. %s' % jexus_resource_path + "\n"
 	##copy jws_garden to jexus.buildpack.
 	destPath = os.path.join(jexus_path, 'jexus');
-	shFilePath = os.path.join(root_path, 'resources/jexus/jw_garden');
-	if not os.path.exists(os.path.join(destPath, 'jw_garden')):
+	shFilePath = os.path.join(root_path, 'resources/jexus/jws_garden');
+	if not os.path.exists(os.path.join(destPath, 'jws_garden')):
 		shutil.copy2(shFilePath, destPath);
-		os.chmod(os.path.join(destPath, 'jw_garden'), 0777);
+		os.chmod(os.path.join(destPath, 'jws_garden'), 0777);
 	else:
 		print "------------->";
-		print 'jw_garden has exists on %s \n' % destPath;
+		print 'jws_garden has exists on %s \n' % destPath;
 
     ##copy config_as_run to build-dir
 	configRunFilePath = os.path.join(root_path, 'config/config_as_run.py');

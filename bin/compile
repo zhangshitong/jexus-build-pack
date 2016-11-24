@@ -4,7 +4,8 @@ import sys,os, shutil
 
 build_dir= sys.argv[1]
 cache_dir= sys.argv[2]
-print("get arguments from cf ..build_dir: %s..  chache_dir: %s..")  % (build_dir, cache_dir)
+print "------------->";
+print("get arguments from cf ..build_dir: %s..  chache_dir: %s..\n")  % (build_dir, cache_dir)
 
 def get_root():
 	try:
@@ -15,26 +16,38 @@ def get_root():
 		print e
 
 
-def prepare_app_files():
-	app_path = os.path.join(build_dir, 'jexus_b_sites');
-	if not os.path.exists(app_path):
-		os.mkdir(app_path)
-	for x in os.listdir(build_dir):
-		srcPath = os.path.join(build_dir, x);
-		if x != 'start-app.sh' and x != 'jexus_build_pack':
-			print "copy %s" % srcPath;
-			if os.path.isdir(app_path):
-				shutil.move(srcPath, app_path);
+# def prepare_app_files():
+# 	app_path = os.path.join(build_dir, 'jexus_b_sites');
+# 	if not os.path.exists(app_path):
+# 		os.mkdir(app_path)
+# 	for x in os.listdir(build_dir):
+# 		srcPath = os.path.join(build_dir, x);
+# 		if x != 'start-app.sh' and x != 'jexus_build_pack':
+# 			print "copy %s" % srcPath;
+# 			if os.path.isdir(app_path):
+# 				shutil.move(srcPath, app_path);
 
 
 def install_jexus(root_path):
-	jexus_path = os.path.join(build_dir, 'jexus_build_pack');
+	jexus_path = os.path.join(build_dir, '.jexus_build_pack');
 	jexus_resource_path = os.path.join(root_path, 'resources/jexus/jexus-5.8.1-x64.tar.gz');
 	if not os.path.exists(jexus_path):
 		os.mkdir(jexus_path, 0777)
-	print "tar -zxf "+jexus_resource_path+" -C "+ jexus_path
+	print "------------->";
+	print "tar -zxf "+jexus_resource_path+" -C "+ jexus_path + "\n"
 	os.system("tar -zxf "+jexus_resource_path+" -C "+ jexus_path)
-	print 'tar -zxf complete. %s' % jexus_resource_path;
+	print "------------->";
+	print 'tar -zxf complete. %s' % jexus_resource_path + "\n"
+	##copy jws_garden to jexus.buildpack.
+	destPath = os.path.join(jexus_path, 'jexus');
+	shFilePath = os.path.join(root_path, 'resources/jexus/jw_garden');
+	if not os.path.exists(os.path.join(destPath, 'jw_garden')):
+		shutil.copy2(shFilePath, destPath);
+		os.chmod(os.path.join(destPath, 'jw_garden'), 0777);
+	else:
+		print "------------->";
+		print 'jw_garden has exists on %s \n' % destPath;
+
     ##copy config_as_run to build-dir
 	configRunFilePath = os.path.join(root_path, 'config/config_as_run.py');
 	destPath = os.path.join(build_dir, 'config_as_run.py');
@@ -42,7 +55,8 @@ def install_jexus(root_path):
 		shutil.copy2(configRunFilePath, build_dir);
 		os.chmod(os.path.join(build_dir, "config_as_run.py"), 0777);
 	else:
-		print 'config_as_run.py has exists on %s' % build_dir;
+		print "------------->";
+		print 'config_as_run.py has exists on %s \n' % build_dir;
 
 
 # make start.sh
@@ -54,20 +68,22 @@ def make_start():
 		file_start.write("wait && ./config_as_run.py\n")
 		# file_start.write("export JAVA_HOME=$PWD/.tongweb_buildpack/jdk1.7.0_55\n")
 		file_start.write("cd $PWD/jexus_build_pack/jexus \n")
-		file_start.write("./jws start")
+		file_start.write("./jws_garden start \n")
 		file_start.close()
 		os.chmod(build_dir +"/start-app.sh",0777)
 
 	else:
-		print "already make the start-app.sh~"
+		print "------------->";
+		print "already make the start-app.sh \n"
 	return
 
 def main():
 	root_path = get_root()
-	prepare_app_files();
+	# prepare_app_files();
 	install_jexus(root_path);
 	make_start()
-	print "compile is compelet!~~"
+	print "------------->";
+	print "compile is compelet! \n"
 	return
 
 

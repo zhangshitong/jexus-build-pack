@@ -72,7 +72,7 @@ wait_as_running()
       continue
     fi     
 
-    if [ $p == "" ]; then
+    if [ "$p" = "" ]; then
       return
     fi
   done

@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="627e59a0-ef35-4ae0-abb4-93d283c3f4c2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/compile" afterPath="$PROJECT_DIR$/bin/compile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jexus/jws_garden" afterPath="$PROJECT_DIR$/resources/jexus/jws_garden" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.txt" afterPath="$PROJECT_DIR$/readme.txt" />
     </list>
     <ignored path="jexus-buildpack.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,8 +45,8 @@
         <option value="$PROJECT_DIR$/bin/release" />
         <option value="$PROJECT_DIR$/config/config_as_run.py" />
         <option value="$PROJECT_DIR$/resources/jexus/jws_garden" />
-        <option value="$PROJECT_DIR$/readme.txt" />
         <option value="$PROJECT_DIR$/bin/compile" />
+        <option value="$PROJECT_DIR$/readme.txt" />
       </list>
     </option>
   </component>
@@ -703,13 +701,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/install.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bin/detect">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -719,7 +710,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bin/detect.py" />
     <entry file="file://$PROJECT_DIR$/bin/compile.py" />
-    <entry file="file://$PROJECT_DIR$/package.sh" />
     <entry file="file://$PROJECT_DIR$/bin/detect">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -752,14 +742,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readme.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/jexus/jws_garden">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1045">
@@ -772,6 +754,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
           <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/install.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="62" selection-start-line="2" selection-start-column="62" selection-end-line="2" selection-end-column="62" />
           <folding />
         </state>
       </provider>
